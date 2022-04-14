@@ -1,0 +1,15 @@
+﻿'MusicKatalog.exe' (Win32): Loaded 'C:\Users\hloiv\source\repos\MusicKatalog\x64\Debug\MusicKatalog.exe'. Symbols loaded.
+'MusicKatalog.exe' (Win32): Loaded 'C:\Windows\System32\ntdll.dll'. 
+'MusicKatalog.exe' (Win32): Loaded 'C:\Windows\System32\kernel32.dll'. 
+'MusicKatalog.exe' (Win32): Loaded 'C:\Windows\System32\KernelBase.dll'. 
+'MusicKatalog.exe' (Win32): Loaded 'C:\Windows\System32\msvcp140d.dll'. 
+'MusicKatalog.exe' (Win32): Loaded 'C:\Windows\System32\vcruntime140d.dll'. 
+'MusicKatalog.exe' (Win32): Loaded 'C:\Windows\System32\vcruntime140_1d.dll'. 
+'MusicKatalog.exe' (Win32): Loaded 'C:\Windows\System32\ucrtbased.dll'. 
+The thread 0x3bd0 has exited with code 0 (0x0).
+'MusicKatalog.exe' (Win32): Loaded 'C:\Windows\System32\kernel.appcore.dll'. 
+'MusicKatalog.exe' (Win32): Loaded 'C:\Windows\System32\msvcrt.dll'. 
+'MusicKatalog.exe' (Win32): Loaded 'C:\Windows\System32\rpcrt4.dll'. 
+The thread 0x2c9c has exited with code 0 (0x0).
+The thread 0x35b0 has exited with code 0 (0x0).
+The program '[1968] MusicKatalog.exe' has exited with code 0 (0x0).
