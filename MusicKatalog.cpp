@@ -56,40 +56,20 @@ void addTextFromFile(song& a) {
 	inText.close();
 }
 
-void saveCataInFile(song*& a, int size) {
-	string path = "catalog.txt";
-	ofstream all;
-	all.open(path, ofstream::app);
-	if (!all.is_open())
-	{
-		cout << "Ошибка!";
-	}
-	else
-	{ 
-		for (int i = 0; i < size; i++) {
-			all.write((char*)&a[i], sizeof(song));
+void searchSong(song* a, int size, string n) {
+
+	bool s = true;
+	cout << "\nРедактирование текста - " << n << endl;
+	for (int i = 0; i < size; i++) {
+		if (_stricmp(a[i].title.c_str(), n.c_str()) == 0) { //поиск без учёта регистра
+			cout << i << " - " << a[i].title << endl;
+			s = false;
 		}
 	}
-	all.close();
+	if (s) cout << "Фильм не найден";
 }
-void printCataFromFile(song*a) {
-	string path;
-	path = "catalog.txt";
-	ifstream inCata;
-	inCata.open(path);
-	if (!inCata.is_open())
-	{
-		cout << "Ошибка!";
-	}
-	else
-	{
-		song temp;
-		while (inCata.read((char*)&temp, sizeof(song)))
-		{
-			printSong(temp);
-		}
-	}
-	inCata.close();
+void delText(song*& a, int size) {
+
 }
 
 song creatSong() {
@@ -193,10 +173,63 @@ int main()
 	song* songFind = new song[size2];
 	song* songCata = new song[size];
 	fill(songCata);
-	//addSong(songCata, size);
-	//printSong(songCata[10]);
-	//saveCataInFile(songCata, size);
-	printCataFromFile(songCata);
+	int menu;
+	do {
+		cout << "\n==========================" << endl;
+		cout << "\n1 - Показ всех песен" << endl;
+		cout << "2 - Добавление песни" << endl;
+		cout << "3 - Cамый популярный в каталоге" << endl;
+		cout << "4 - Поиск по названию" << endl;
+		cout << "5 - Поиск по жанру" << endl;
+		cout << "6 - Поиск по режиссеру" << endl;
+		cout << "0 - Выход" << endl;
+		cout << "\n==========================" << endl;
+		cin >> menu;
+		cin.ignore();
+		switch (menu) {
+		case 1: {
+			printCata(songCata, size);
+		}
+			  break;
+		case 2: {
+			addSong(songCata, size);
+
+		}
+			  break;
+		case 3: {
+			mostPopular(movieCat, size);
+		}
+			  break;
+		case 4: {
+			cout << "Введите название - ";
+			string n;
+			getline(cin, n);
+			searchName(movieCat, size, n);
+		}
+			  break;
+		case 5: {
+			printMenuGenre();
+			int g;
+			cin >> g;
+			searchGenre(movieCat, movieFind, size, size2, g);
+			printCat(movieFind, size2);
+			mostPopularFind(movieFind, size2);
+		}
+			  break;
+		case 6: {
+			cout << "Введите режиссера - ";
+			string n;
+			getline(cin, n);
+			searchDir(movieCat, movieFind, size, size2, n);
+			printCat(movieFind, size2);
+			mostPopularFind(movieFind, size2);
+		}
+			  break;
+		}
+
+	} while (menu != 0);
+		
+	printCata(songCata, size);
 	delete[]songCata;
 	delete[]songFind;
 	return 0;
@@ -210,3 +243,42 @@ if (pos == -1)
 cout << "not finded" << endl;
 else
 cout << "finded in " << pos << " simvol position" << endl;*/
+
+/*void saveCataInFile(song*& a, int size) {
+	string path = "catalog.txt";
+	ofstream all;
+	all.open(path, ofstream::app);
+	if (!all.is_open())
+	{
+		cout << "Ошибка!";
+	}
+	else
+	{
+		for (int i = 0; i < size; i++) {
+			all.write((char*)&a[i], sizeof(song));
+		}
+	}
+	all.close();
+}
+void printCataFromFile(song* a, int size) {
+	string path;
+	path = "catalog.txt";
+	ifstream inCata;
+	inCata.open(path);
+	if (!inCata.is_open())
+	{
+		cout << "Ошибка!";
+	}
+	else
+	{
+		song temp;
+		while (inCata.read((char*)&temp, sizeof(song)))
+		{
+			for (int i = 0; i < size; i++)
+			{
+				a[i] = temp;
+			}
+		}
+	}
+	inCata.close();
+}*/
