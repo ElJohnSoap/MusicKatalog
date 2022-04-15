@@ -34,6 +34,8 @@ void addTextFromFile(song& a) {
 	getchar();
 	getline(cin, path);
 	path = path + ".txt";
+	cout << "Текст из файла " << path << endl;;
+	system("pause");
 	ifstream inText;
 	inText.open(path);
 	if (!inText.is_open())
@@ -50,7 +52,7 @@ void addTextFromFile(song& a) {
 			str2 += str + "\n";
 		}	
 		a.text = str2;
-		cout << a.text;
+		cout << "\nТекст из файла " << path << " добавлен.";
 		cout << endl;
 	}
 	inText.close();
@@ -96,13 +98,26 @@ void delText(song*& a, int numb) {
 void changeText(song*& a, int numb) {
 
 }
-void screenText(song*& a, int numb) {
-	cout << a[numb].text;
+void screenText(song a) {
+	cout << a.text << endl;
 }
-void saveTextFile(song*& a, int numb) {
+void saveTextFile(song& a) {
 
 }
-void dialogAddText ()
+void dialogAddText(song& a) {
+	cout << "Текст \n";
+	cout << " 1 - Ввести с клавиатуры\n";
+	cout << " 2 - Считать из файла\n";
+	int f;
+	cin >> f;
+	if (f == 1) {
+		cin.ignore();
+		getline(cin, a.text);
+	}
+	if (f == 2) {
+		addTextFromFile(a);
+	}
+}
 song creatSong() {
 	song temp;
 	cout << "Название ";
@@ -112,17 +127,7 @@ song creatSong() {
 	getline(cin, temp.author);
 	cout << "Год создания ";
 	cin >> temp.year;
-	cout << "Текст \n";
-	cout << " 1 - Ввести с клавиатуры\n";
-	cout << " 2 - Считать из файла\n";
-	int f;
-	cin >> f;
-	if (f == 1) {
-		getline(cin, temp.text);
-	}
-	if (f == 2) {
-		addTextFromFile(temp);
-	}
+	dialogAddText(temp);
 	return temp;
 }
 
@@ -252,7 +257,8 @@ int main()
 			int menu5;
 			do
 			{
-				cout << "\n==Меню работы с текстом===" << endl;				
+				cout << "\n==Меню работы с текстом===" << endl;
+				cout << "\t" <<songCata[numb].title << endl;
 				cout << "1 - Добавление текста" << endl;
 				cout << "2 - Текст на экран" << endl;
 				cout << "3 - Сохранить текст в файл" << endl;
@@ -265,21 +271,11 @@ int main()
 				switch (menu5)
 				{
 				case 1: {
-					cout << "Текст \n";
-					cout << " 1 - Ввести с клавиатуры\n";
-					cout << " 2 - Считать из файла\n";
-					int f;
-					cin >> f;
-					if (f == 1) {
-						getline(cin, songCata[numb].text);
-					}
-					if (f == 2) {
-						addTextFromFile(songCata[numb]);
-					}
+					dialogAddText(songCata[numb]);
 				}
 					  break;
 				case 2: {
-					screenText(songCata, numb);
+					screenText(songCata[numb]);
 				}
 					  break;
 				case 5: {
