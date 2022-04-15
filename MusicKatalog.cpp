@@ -27,23 +27,25 @@ struct song
 	string text;
 	int year;
 };
+
 void printSong(song a);
 void addTextFromFile(song& a) {
 	string path;
+	cout << "Тестовый файл fff. Вводить без расширения.\n";
 	cout << "Введите имя файла чтобы загрузить текст:";
 	getchar();
 	getline(cin, path);
-	path = path + ".txt";
-	cout << "Текст из файла " << path << endl;;
-	system("pause");
+	path = path + ".txt";	
 	ifstream inText;
 	inText.open(path);
 	if (!inText.is_open())
 	{
-		cout << "Ошибка!";
+		cout << "Ошибка открытия файла!\n";
 	}
 	else
 	{
+		cout << "Текст из файла " << path << endl;
+		system("pause");
 		string str, str2;
 		while (!inText.eof())
 		{
@@ -88,9 +90,9 @@ bool confirm() {
 	return a = true;
 }
 
-void delText(song*& a, int numb) {
+void delText(song& a) {
 	if (confirm()) {
-		a[numb].text = "Нет текста";
+		a.text = "Нет текста";
 		cout << "Текст удалён";
 	}
 	else cout << "Отмена\n";
@@ -131,6 +133,43 @@ song creatSong() {
 	return temp;
 }
 
+void menuItem5(song& a) {
+	int menu5;
+	do
+	{
+		cout << "\n==Меню работы с текстом===" << endl;
+		cout << "\t" << a.title << endl;
+		cout << "1 - Добавление текста" << endl;
+		cout << "2 - Текст на экран" << endl;
+		cout << "3 - Сохранить текст в файл" << endl;
+		cout << "4 - Изменение текста" << endl;
+		cout << "5 - Удаление текста" << endl;
+		cout << "0 - Выход в главное меню" << endl;
+		cout << "\n==========================" << endl;
+		
+		cin >> menu5;
+		cin.ignore();
+		switch (menu5)
+		{
+		case 1: {
+			dialogAddText(a);
+		}
+			  break;
+		case 2: {
+			screenText(a);
+		}
+			  break;
+		case 5: {
+			delText(a);
+		}
+			  break;
+		default:
+			break;
+		}
+
+	} while (menu5 != 0);
+
+}
 void printSong(song a) {
 	cout << endl;
 	cout << "---------------------------\n";
@@ -254,51 +293,17 @@ int main()
 			string n;
 			getline(cin, n);
 			int numb = searchTitle(songCata, size, n);
-			int menu5;
-			do
-			{
-				cout << "\n==Меню работы с текстом===" << endl;
-				cout << "\t" <<songCata[numb].title << endl;
-				cout << "1 - Добавление текста" << endl;
-				cout << "2 - Текст на экран" << endl;
-				cout << "3 - Сохранить текст в файл" << endl;
-				cout << "4 - Изменение текста" << endl;
-				cout << "5 - Удаление текста" << endl;
-				cout << "0 - Выход" << endl;
-				cout << "\n==========================" << endl;
-				cin >> menu5;
-				cin.ignore();
-				switch (menu5)
-				{
-				case 1: {
-					dialogAddText(songCata[numb]);
-				}
-					  break;
-				case 2: {
-					screenText(songCata[numb]);
-				}
-					  break;
-				case 5: {
-					delText(songCata, numb);
-				}
-					  break;
-				default:
-					break;
-				}
-
-			} while (menu5 != 0);
-
+			menuItem5(songCata[numb]);
 		}
 			  break;
 		case 6: {
 
 		}
 			  break;
-
-
 		}
-	} while (menu != 0);
-		
+	}
+	while (menu != 0);
+	
 	//printCata(songCata, size);
 	delete[]songCata;
 	delete[]songFind;
