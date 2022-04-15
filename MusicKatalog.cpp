@@ -56,22 +56,53 @@ void addTextFromFile(song& a) {
 	inText.close();
 }
 
-void searchSong(song* a, int size, string n) {
+int searchTitle(song* a, int size, string n) {
 
 	bool s = true;
-	cout << "\nРедактирование текста - " << n << endl;
+	cout << "\nПоиск - " << n << endl;
 	for (int i = 0; i < size; i++) {
 		if (_stricmp(a[i].title.c_str(), n.c_str()) == 0) { //поиск без учёта регистра
-			cout << i << " - " << a[i].title << endl;
+			cout << "\n" << i+1 << " - " << a[i].title << endl;
 			s = false;
+			return i;
 		}
+		
 	}
-	if (s) cout << "Фильм не найден";
+	if (s) {
+		cout << "Песня не найдена";
+		return -1;
+	}
 }
-void delText(song*& a, int size) {
+
+bool confirm() {
+	bool a;
+	char c;
+	cout << "Подтверждаете? Нажмите - Y\n";
+	cin >> c;
+	if (c != 'Y') {
+		a = false;
+		return a;
+	}
+	return a = true;
+}
+
+void delText(song*& a, int numb) {
+	if (confirm()) {
+		a[numb].text = "Нет текста";
+		cout << "Текст удалён";
+	}
+	else cout << "Отмена\n";
+}
+void changeText(song*& a, int numb) {
 
 }
+void screenText(song*& a, int numb) {
+	cout << a[numb].text;
+}
+void saveTextFile(song*& a, int numb) {
 
+}
+void dialogAddText ()
 song creatSong() {
 	song temp;
 	cout << "Название ";
@@ -127,7 +158,7 @@ void printCata(song* a, int size) {
 void searchAuthor(song* a, song*& f, int size, int& size2, string n) {
 	bool s = true;
 	int count = 0;
-	cout << "\nПесн автора -  " << n << endl;
+	cout << "\nПесни автора -  " << n << endl;
 	for (int i = 0; i < size; i++) {
 
 		if (_stricmp(a[i].author.c_str(), n.c_str()) == 0) {
@@ -175,15 +206,15 @@ int main()
 	fill(songCata);
 	int menu;
 	do {
-		cout << "\n==========================" << endl;
+		cout << "\n=====Главное меню=========" << endl;
 		cout << "\n1 - Показ всех песен" << endl;
 		cout << "2 - Добавление песни" << endl;
-		cout << "3 - Cамый популярный в каталоге" << endl;
-		cout << "4 - Поиск по названию" << endl;
-		cout << "5 - Поиск по жанру" << endl;
-		cout << "6 - Поиск по режиссеру" << endl;
+		cout << "3 - Поиск по названию" << endl;
+		cout << "4 - Поиск по автору" << endl;
+		cout << "5 - Изменение текста песни" << endl;
 		cout << "0 - Выход" << endl;
 		cout << "\n==========================" << endl;
+
 		cin >> menu;
 		cin.ignore();
 		switch (menu) {
@@ -191,45 +222,88 @@ int main()
 			printCata(songCata, size);
 		}
 			  break;
+
 		case 2: {
 			addSong(songCata, size);
+		}
+			  break;
 
-		}
-			  break;
 		case 3: {
-			mostPopular(movieCat, size);
-		}
-			  break;
-		case 4: {
 			cout << "Введите название - ";
 			string n;
 			getline(cin, n);
-			searchName(movieCat, size, n);
+			searchTitle(songCata, size, n);
+		}
+			  break;
+
+		case 4: {
+			cout << "Введите автора - ";
+			string n;
+			getline(cin, n);
+			searchAuthor(songCata, songFind, size, size2, n);
+			printCata(songFind, size2);
 		}
 			  break;
 		case 5: {
-			printMenuGenre();
-			int g;
-			cin >> g;
-			searchGenre(movieCat, movieFind, size, size2, g);
-			printCat(movieFind, size2);
-			mostPopularFind(movieFind, size2);
+			cout << "Введите название - ";
+			string n;
+			getline(cin, n);
+			int numb = searchTitle(songCata, size, n);
+			int menu5;
+			do
+			{
+				cout << "\n==Меню работы с текстом===" << endl;				
+				cout << "1 - Добавление текста" << endl;
+				cout << "2 - Текст на экран" << endl;
+				cout << "3 - Сохранить текст в файл" << endl;
+				cout << "4 - Изменение текста" << endl;
+				cout << "5 - Удаление текста" << endl;
+				cout << "0 - Выход" << endl;
+				cout << "\n==========================" << endl;
+				cin >> menu5;
+				cin.ignore();
+				switch (menu5)
+				{
+				case 1: {
+					cout << "Текст \n";
+					cout << " 1 - Ввести с клавиатуры\n";
+					cout << " 2 - Считать из файла\n";
+					int f;
+					cin >> f;
+					if (f == 1) {
+						getline(cin, songCata[numb].text);
+					}
+					if (f == 2) {
+						addTextFromFile(songCata[numb]);
+					}
+				}
+					  break;
+				case 2: {
+					screenText(songCata, numb);
+				}
+					  break;
+				case 5: {
+					delText(songCata, numb);
+				}
+					  break;
+				default:
+					break;
+				}
+
+			} while (menu5 != 0);
+
 		}
 			  break;
 		case 6: {
-			cout << "Введите режиссера - ";
-			string n;
-			getline(cin, n);
-			searchDir(movieCat, movieFind, size, size2, n);
-			printCat(movieFind, size2);
-			mostPopularFind(movieFind, size2);
+
 		}
 			  break;
-		}
 
+
+		}
 	} while (menu != 0);
 		
-	printCata(songCata, size);
+	//printCata(songCata, size);
 	delete[]songCata;
 	delete[]songFind;
 	return 0;
