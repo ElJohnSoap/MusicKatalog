@@ -27,7 +27,40 @@ struct song
 	string text;
 	int year;
 };
+void saveSize(int size) {
+	string path = "source\\size.txt";
+	ofstream all;
+	all.open(path, ofstream::out);
+	if (!all.is_open())
+	{
+		cout << "Ошибка!";
+	}
+	else
+	{
+		all << size;
+	}
+	all.close();
+}
 
+void initSize(int& size) {
+	string path;
+	path = "source\\size.txt";
+	ifstream inAll;
+	inAll.open(path);
+
+	if (!inAll.is_open())
+	{
+		cout << "Ошибка!";
+	}
+	else
+	{
+		inAll >> size;
+	}
+	inAll.close();
+}
+
+void printCataFromFile(song*& a, int size);
+void saveCataInFile(song* a, int size);
 void printSong(song a);
 void addTextFromFile(song& a) {
 	string path;
@@ -35,7 +68,7 @@ void addTextFromFile(song& a) {
 	cout << "Введите имя файла чтобы загрузить текст:";
 	getchar();
 	getline(cin, path);
-	path = path + ".txt";	
+	path = "source\\" + path + ".txt";
 	ifstream inText;
 	inText.open(path);
 	if (!inText.is_open())
@@ -73,7 +106,7 @@ int searchTitle(song* a, int size, string n) {
 		
 	}
 	if (s) {
-		cout << "Песня не найдена";
+		cout << "Песня не найдена\n";
 		return -1;
 	}
 }
@@ -103,8 +136,20 @@ void changeText(song*& a, int numb) {
 void screenText(song a) {
 	cout << a.text << endl;
 }
-void saveTextFile(song& a) {
-
+void saveTextFile(song a) {
+	string path = "source\\" + a.title + ".txt";
+	ofstream all;
+	all.open(path, ofstream::out);
+	if (!all.is_open())
+	{
+		cout << "Ошибка!";
+	}
+	else
+	{
+		all << a.text;
+		cout << "\nТекст сохранён в файл " << path << endl;
+	}
+	all.close();
 }
 void dialogAddText(song& a) {
 	cout << "Текст \n";
@@ -157,6 +202,10 @@ void menuItem5(song& a) {
 			  break;
 		case 2: {
 			screenText(a);
+		}
+			  break;
+		case 3: {
+			saveTextFile(a);
 		}
 			  break;
 		case 5: {
@@ -244,10 +293,13 @@ int main()
 	SetConsoleOutputCP(1251);
 	SetConsoleCP(1251);
 
-	int size = 10, size2 = 0;
+	int size, size2 = 0;
+	initSize(size);
 	song* songFind = new song[size2];
 	song* songCata = new song[size];
-	fill(songCata);
+	//fill(songCata);
+	printCataFromFile(songCata, size);
+	
 	int menu;
 	do {
 		cout << "\n=====Главное меню=========" << endl;
@@ -293,6 +345,9 @@ int main()
 			string n;
 			getline(cin, n);
 			int numb = searchTitle(songCata, size, n);
+			if (numb == -1) {
+				break;
+			}
 			menuItem5(songCata[numb]);
 		}
 			  break;
@@ -303,7 +358,8 @@ int main()
 		}
 	}
 	while (menu != 0);
-	
+	saveSize(size);
+	saveCataInFile(songCata, size);
 	//printCata(songCata, size);
 	delete[]songCata;
 	delete[]songFind;
@@ -319,10 +375,10 @@ cout << "not finded" << endl;
 else
 cout << "finded in " << pos << " simvol position" << endl;*/
 
-/*void saveCataInFile(song*& a, int size) {
-	string path = "catalog.txt";
+void saveCataInFile(song* a, int size) {
+	string path = "source\\catalog.txt";
 	ofstream all;
-	all.open(path, ofstream::app);
+	all.open(path, ofstream::out);
 	if (!all.is_open())
 	{
 		cout << "Ошибка!";
@@ -330,30 +386,42 @@ cout << "finded in " << pos << " simvol position" << endl;*/
 	else
 	{
 		for (int i = 0; i < size; i++) {
-			all.write((char*)&a[i], sizeof(song));
+			all << a[i].title << "\n" << a[i].author << "\n" << a[i].text << "\n" << a[i].year << endl;
 		}
 	}
 	all.close();
 }
-void printCataFromFile(song* a, int size) {
-	string path;
-	path = "catalog.txt";
-	ifstream inCata;
-	inCata.open(path);
-	if (!inCata.is_open())
+void printCataFromFile(song *&a, int size) {
+	int i = 0;
+	string path, temp;
+	path = "source\\catalog.txt";
+	ifstream inAll;
+	inAll.open(path);
+
+	if (!inAll.is_open())
 	{
 		cout << "Ошибка!";
 	}
 	else
 	{
-		song temp;
-		while (inCata.read((char*)&temp, sizeof(song)))
+		while (i<size)
+		/*while (!inAll.eof()) не понял почему, но при таком условии
+								конец файла достигается позже чем заканчивается массив
+								хотя внешне всё должно быть ок
+								Проверял - пытается ещё два прохода сделать 
+								и уходит за пределы массива*/
 		{
-			for (int i = 0; i < size; i++)
-			{
-				a[i] = temp;
-			}
+			
+			getline(inAll, a[i].title);
+			getline(inAll, a[i].author);
+			getline(inAll, a[i].text);
+			inAll >> a[i].year;
+			getline(inAll, temp); //считывает \n после инта
+			
+			cout << a[i].title << " " << a[i].author << " " << a[i].text << " " << a[i].year << endl;
+			i++;
 		}
 	}
-	inCata.close();
-}*/
+	inAll.close();
+	//return a;
+}
