@@ -26,6 +26,7 @@ struct song
 	string author;//автор
 	string text;
 	int year;
+	string fileWithText;
 };
 void saveSize(int size) {
 	string path = "source\\size.txt";
@@ -139,6 +140,7 @@ void screenText(song a) {
 void saveTextFile(song a) {
 	string path = "source\\" + a.title + ".txt";
 	ofstream all;
+	a.fileWithText = path;
 	all.open(path, ofstream::out);
 	if (!all.is_open())
 	{
@@ -174,6 +176,7 @@ song creatSong() {
 	getline(cin, temp.author);
 	cout << "Год создания ";
 	cin >> temp.year;
+	temp.fileWithText = "source\\" + temp.title + ".txt";
 	dialogAddText(temp);
 	return temp;
 }
@@ -275,16 +278,16 @@ void searchAuthor(song* a, song*& f, int size, int& size2, string n) {
 }
 
 void fill(song*& songCata) {
-	songCata[0] = { "Forrest Gump", "Robert Zemeckis", "ппроп", 1940};
-	songCata[1] = { "The Curious Case", "David Fincher", "пррт", 1225};
-	songCata[2] = { "The Shining", "Stanley Kubrick", "вап", 2600};
-	songCata[3] = { "Fight Club", "David Fincher", "ыпыпы", 5000};
-	songCata[4] = { "Tough nut", "John McTiernan", "ыапра", 4500};
-	songCata[5] = { "RoboCop", "Paul Verhoeven", "ыарыр", 4500};
-	songCata[6] = { "Alien", "Ridley Scott", "ыары", 1900};
-	songCata[7] = { "World War Z", "Marc Forster", "ыапрыа", 1500};
-	songCata[8] = { "The Game", "David Fincher", "ыарры", 2010};
-	songCata[9] = { "Terminator 2", "James Cameron", "ыаррыа", 2050};
+	songCata[0] = { "Forrest Gump", "Robert Zemeckis", "нет текста", 1940, " "};
+	songCata[1] = { "The Curious Case", "David Fincher", "нет текста", 1225, " "};
+	songCata[2] = { "The Shining", "Stanley Kubrick", "нет текста", 2600, " "};
+	songCata[3] = { "Fight Club", "David Fincher", "нет текста", 5000, " "};
+	songCata[4] = { "Tough nut", "John McTiernan", "нет текста", 4500, " "};
+	songCata[5] = { "RoboCop", "Paul Verhoeven", "нет текста", 4500, " "};
+	songCata[6] = { "Alien", "Ridley Scott", "нет текста", 1900, " "};
+	songCata[7] = { "World War Z", "Marc Forster", "нет текста", 1500, " "};
+	songCata[8] = { "The Game", "David Fincher", "нет текста", 2010, " "};
+	songCata[9] = { "Terminator 2", "James Cameron", "нет текста", 2050, " "};
 }
 
 int main()
@@ -386,7 +389,8 @@ void saveCataInFile(song* a, int size) {
 	else
 	{
 		for (int i = 0; i < size; i++) {
-			all << a[i].title << "\n" << a[i].author << "\n" << a[i].text << "\n" << a[i].year << endl;
+			all << a[i].title << "\n" << a[i].author << "\n" << a[i].text << "\n" 
+				<< a[i].year << "\n" << a[i].fileWithText << endl;
 		}
 	}
 	all.close();
@@ -416,12 +420,11 @@ void printCataFromFile(song *&a, int size) {
 			getline(inAll, a[i].author);
 			getline(inAll, a[i].text);
 			inAll >> a[i].year;
-			getline(inAll, temp); //считывает \n после инта
-			
-			cout << a[i].title << " " << a[i].author << " " << a[i].text << " " << a[i].year << endl;
+			getline(inAll, temp);
+			getline(inAll, a[i].fileWithText);//считывает \n после инта
+			//cout << a[i].title << " " << a[i].author << " " << a[i].text << " " << a[i].year << endl;
 			i++;
 		}
 	}
 	inAll.close();
-	//return a;
 }

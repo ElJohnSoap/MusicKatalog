@@ -1,48 +1,55 @@
 Forrest Gump
 Robert Zemeckis
-ппроп
+нет текста
 1940
+ 
 The Curious Case
 David Fincher
-пррт
+нет текста
 1225
+ 
 The Shining
 Stanley Kubrick
-вап
+нет текста
 2600
+ 
 Fight Club
 David Fincher
-ыпыпы
+нет текста
 5000
+ 
 Tough nut
 John McTiernan
-ыапра
+нет текста
 4500
+ 
 RoboCop
 Paul Verhoeven
-ыарыр
+нет текста
 4500
+ 
 Alien
 Ridley Scott
-ыары
+нет текста
 1900
+ 
 World War Z
 Marc Forster
-ыапрыа
+нет текста
 1500
+ 
 The Game
 David Fincher
-ыарры
+нет текста
 2010
+ 
 Terminator 2
 James Cameron
-ыаррыа
+qwert qwert
 2050
-wwrt
-asdert
-1234556789
-2022
-222
-aaaaa
-222222222
-2023
+ 
+wert
+asdfer
+zxcv
+2222
+source\wert.txt

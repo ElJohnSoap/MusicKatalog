@@ -6,8 +6,10 @@
 'MusicKatalog.exe' (Win32): Loaded 'C:\Windows\System32\vcruntime140d.dll'. 
 'MusicKatalog.exe' (Win32): Loaded 'C:\Windows\System32\vcruntime140_1d.dll'. 
 'MusicKatalog.exe' (Win32): Loaded 'C:\Windows\System32\ucrtbased.dll'. 
-The thread 0x1a00 has exited with code 0 (0x0).
-The thread 0x2214 has exited with code 3221225547 (0xc000004b).
-The thread 0x31d4 has exited with code 3221225786 (0xc000013a).
-The thread 0x614 has exited with code 3221225786 (0xc000013a).
-The program '[14164] MusicKatalog.exe' has exited with code 3221225786 (0xc000013a).
+The thread 0x2f48 has exited with code 0 (0x0).
+'MusicKatalog.exe' (Win32): Loaded 'C:\Windows\System32\kernel.appcore.dll'. 
+'MusicKatalog.exe' (Win32): Loaded 'C:\Windows\System32\msvcrt.dll'. 
+'MusicKatalog.exe' (Win32): Loaded 'C:\Windows\System32\rpcrt4.dll'. 
+The thread 0x1768 has exited with code 0 (0x0).
+The thread 0x3318 has exited with code 0 (0x0).
+The program '[11372] MusicKatalog.exe' has exited with code 0 (0x0).
