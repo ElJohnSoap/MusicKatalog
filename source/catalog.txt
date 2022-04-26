@@ -8,11 +8,6 @@ David Fincher
 нет текста
 1225
  
-The Shining
-Stanley Kubrick
-нет текста
-2600
- 
 Fight Club
 David Fincher
 нет текста
@@ -30,9 +25,9 @@ Paul Verhoeven
  
 Alien
 Ridley Scott
-нет текста
+потому что
 1900
- 
+source\Alien.txt
 World War Z
 Marc Forster
 нет текста
@@ -45,11 +40,11 @@ David Fincher
  
 Terminator 2
 James Cameron
-qwert qwert
+я помню 
 2050
- 
-wert
-asdfer
-zxcv
-2222
-source\wert.txt
+source\Terminator 2.txt
+qwert
+asder
+апрель
+2
+source\qwert.txt

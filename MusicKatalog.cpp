@@ -7,7 +7,7 @@
 • Для каждой песни нужно указывать название песни, автора текста и
 год создания песни (если он известен).
 ■ Удаление текста песни.
-■ Изменение текста песни.
+// отменили ■ Изменение текста песни.
 ■ Отображение текста песни на экран.
 ■ Сохранение текста песни в файл.
 ■ Поиск и отображение всех песен одного автора.
@@ -24,10 +24,11 @@ struct song
 {
 	string title;//название
 	string author;//автор
-	string text;
-	int year;
-	string fileWithText;
+	string text; //текст	
+	int year;	// год
+	string fileWithText; // файл с текстом
 };
+
 void saveSize(int size) {
 	string path = "source\\size.txt";
 	ofstream all;
@@ -41,8 +42,7 @@ void saveSize(int size) {
 		all << size;
 	}
 	all.close();
-}
-
+}//сохранение размера каталога
 void initSize(int& size) {
 	string path;
 	path = "source\\size.txt";
@@ -63,41 +63,51 @@ void initSize(int& size) {
 void printCataFromFile(song*& a, int size);
 void saveCataInFile(song* a, int size);
 void printSong(song a);
+void initStructText(song& a);
+
 void addTextFromFile(song& a) {
-	string path;
+	string pathSourse, pathDest;
 	cout << "Тестовый файл fff. Вводить без расширения.\n";
 	cout << "Введите имя файла чтобы загрузить текст:";
 	getchar();
-	getline(cin, path);
-	path = "source\\" + path + ".txt";
-	ifstream inText;
-	inText.open(path);
-	if (!inText.is_open())
+	getline(cin, pathSourse);
+	pathSourse = "source\\" + pathSourse + ".txt";
+	pathDest = "source\\" + a.title + ".txt";
+	if (pathSourse == pathDest) {
+		return;
+	}
+	ifstream sourseFile;
+	ofstream destFile;
+	sourseFile.open(pathSourse);
+	destFile.open(pathDest, ofstream::out);
+	if (!sourseFile.is_open())
 	{
 		cout << "Ошибка открытия файла!\n";
 	}
 	else
 	{
-		cout << "Текст из файла " << path << endl;
+		cout << "Текст из файла " << pathSourse << endl;
 		system("pause");
-		string str, str2;
-		while (!inText.eof())
+		string str;
+		getline(sourseFile, str);
+		while (!sourseFile.eof())
 		{
-			
-			getline(inText, str);
-			str2 += str + "\n";
-		}	
-		a.text = str2;
-		cout << "\nТекст из файла " << path << " добавлен.";
+			destFile << str << endl;
+			getline(sourseFile, str);
+		}
+		destFile << str;
+		a.fileWithText = pathDest;
+		cout << "\nТекст из файла " << pathSourse << " добавлен.";
 		cout << endl;
 	}
-	inText.close();
+	sourseFile.close();
+	destFile.close();
 }
 
 int searchTitle(song* a, int size, string n) {
 
 	bool s = true;
-	cout << "\nПоиск - " << n << endl;
+	//cout << "\nПоиск - " << n << endl;
 	for (int i = 0; i < size; i++) {
 		if (_stricmp(a[i].title.c_str(), n.c_str()) == 0) { //поиск без учёта регистра
 			cout << "\n" << i+1 << " - " << a[i].title << endl;
@@ -122,62 +132,144 @@ bool confirm() {
 		return a;
 	}
 	return a = true;
-}
+} // подтверждение действия
 
 void delText(song& a) {
 	if (confirm()) {
-		a.text = "Нет текста";
+		a.fileWithText.clear();
 		cout << "Текст удалён";
+		a.text = "нет текста";
 	}
 	else cout << "Отмена\n";
 }
-void changeText(song*& a, int numb) {
-
-}
+/*void changeText(song& a) {
+	cin.ignore();
+	string temp;
+	getline(cin, temp);
+	a.text += "\n" + temp + "\n";
+}*/
 void screenText(song a) {
-	cout << a.text << endl;
+	string path;
+	path = a.fileWithText;
+	ifstream File;
+	File.open(path);
+
+	if (!File.is_open())
+	{
+		cout << "Ошибка открытия файла!\n";
+	}
+	else
+	{
+		string str;
+		while (getline(File, str))
+		{
+			cout << str << endl;
+		}
+	}
+	File.close();
 }
+
 void saveTextFile(song a) {
 	string path = "source\\" + a.title + ".txt";
-	ofstream all;
+	ofstream save;
 	a.fileWithText = path;
-	all.open(path, ofstream::out);
-	if (!all.is_open())
+	save.open(path, ofstream::out);
+	if (!save.is_open())
 	{
 		cout << "Ошибка!";
 	}
 	else
 	{
-		all << a.text;
+		int pos = -1;
+		cin.ignore();
+		cout << "Для окончания ввода нажмите ~\n";
+		do
+		{
+			string temp, end = "~";
+			getline(cin, temp);
+			save << temp << endl;
+			pos = temp.rfind(end); //проверка строки на наличие символа окончания ввода (~)
+		} while (pos == -1);
 		cout << "\nТекст сохранён в файл " << path << endl;
 	}
-	all.close();
+	save.close();
 }
+/*string SearchInLine(song a) {
+	cin.ignore();
+	string temp, end = "~";
+	getline(cin, temp);
+	int pos = temp.rfind(end); //проверка строки на наличие символа окончания ввода (~)
+	return temp;
+}*/
+
+void searchText(song* a, int size, string end) {
+	for (int i = 0; i < size; i++) {
+		ifstream File;
+		string path = a[i].fileWithText;
+		if (a[i].text == "нет текста") {
+			continue;
+		}
+		File.open(path);
+		if (!File.is_open())
+		{
+			cout << "Ошибка!";
+		}
+		else
+		{
+			string str;
+			while (getline(File, str))
+			{
+				if (str.find(end) != -1) {
+					cout << endl << a[i].title << endl;
+				}
+			}
+		}
+		File.close();
+	}
+}
+
 void dialogAddText(song& a) {
 	cout << "Текст \n";
 	cout << " 1 - Ввести с клавиатуры\n";
 	cout << " 2 - Считать из файла\n";
+	cout << " 3 - Пропустить\n";
 	int f;
 	cin >> f;
 	if (f == 1) {
-		cin.ignore();
-		getline(cin, a.text);
+		saveTextFile(a);
 	}
-	if (f == 2) {
+	else if (f == 2) {
 		addTextFromFile(a);
 	}
+	initStructText(a);
 }
+void initStructText(song& a) {
+	if (a.fileWithText.length() == 0) {
+		a.text = "Нет текста";
+	}
+	else {
+		string path;
+		path = a.fileWithText;
+		ifstream File;
+		File.open(path);
+		string str;
+		getline(File, str);
+		a.text = str;
+		File.close();
+	}
+}
+
 song creatSong() {
 	song temp;
 	cout << "Название ";
-	getchar();
+	//getchar();
 	getline(cin, temp.title);
 	cout << "Автор ";
 	getline(cin, temp.author);
 	cout << "Год создания ";
 	cin >> temp.year;
-	temp.fileWithText = "source\\" + temp.title + ".txt";
 	dialogAddText(temp);
+	initStructText(temp);
 	return temp;
 }
 
@@ -190,8 +282,7 @@ void menuItem5(song& a) {
 		cout << "1 - Добавление текста" << endl;
 		cout << "2 - Текст на экран" << endl;
 		cout << "3 - Сохранить текст в файл" << endl;
-		cout << "4 - Изменение текста" << endl;
-		cout << "5 - Удаление текста" << endl;
+		cout << "4 - Удаление текста" << endl;
 		cout << "0 - Выход в главное меню" << endl;
 		cout << "\n==========================" << endl;
 		
@@ -211,7 +302,8 @@ void menuItem5(song& a) {
 			saveTextFile(a);
 		}
 			  break;
-		case 5: {
+		
+		case 4: {
 			delText(a);
 		}
 			  break;
@@ -241,6 +333,19 @@ void addSong(song*& songCata, int& size) {
 	delete[]songCata;
 	songCata = temp;
 	size++;
+}
+
+void delSong(song*& songCata, int& size, int numb) {
+	song* temp = new song[size - 1];
+	for (int i = 0, j = 0; i < size; i++, j++) {
+		if (i==numb)
+			j--;
+		else
+			temp[j] = songCata[i];
+	}
+	delete[]songCata;
+	songCata = temp;
+	size--;
 }
 
 void printCata(song* a, int size) {
@@ -277,7 +382,7 @@ void searchAuthor(song* a, song*& f, int size, int& size2, string n) {
 	if (s) cout << "Автор не найден";
 }
 
-void fill(song*& songCata) {
+/*void fill(song*& songCata) {
 	songCata[0] = { "Forrest Gump", "Robert Zemeckis", "нет текста", 1940, " "};
 	songCata[1] = { "The Curious Case", "David Fincher", "нет текста", 1225, " "};
 	songCata[2] = { "The Shining", "Stanley Kubrick", "нет текста", 2600, " "};
@@ -288,7 +393,7 @@ void fill(song*& songCata) {
 	songCata[7] = { "World War Z", "Marc Forster", "нет текста", 1500, " "};
 	songCata[8] = { "The Game", "David Fincher", "нет текста", 2010, " "};
 	songCata[9] = { "Terminator 2", "James Cameron", "нет текста", 2050, " "};
-}
+}*/
 
 int main()
 {
@@ -302,7 +407,7 @@ int main()
 	song* songCata = new song[size];
 	//fill(songCata);
 	printCataFromFile(songCata, size);
-	
+	string n;
 	int menu;
 	do {
 		cout << "\n=====Главное меню=========" << endl;
@@ -310,42 +415,48 @@ int main()
 		cout << "2 - Добавление песни" << endl;
 		cout << "3 - Поиск по названию" << endl;
 		cout << "4 - Поиск по автору" << endl;
-		cout << "5 - Изменение текста песни" << endl;
+		cout << "5 - Поиск по тексту" << endl;
+		cout << "6 - Изменение текста песни" << endl;
+		cout << "7 - Удаление песни" << endl;
 		cout << "0 - Выход" << endl;
 		cout << "\n==========================" << endl;
 
 		cin >> menu;
 		cin.ignore();
 		switch (menu) {
-		case 1: {
+		case 1:
 			printCata(songCata, size);
-		}
-			  break;
+		break;
 
-		case 2: {
+		case 2: 
 			addSong(songCata, size);
-		}
-			  break;
+			cout << "Добавлено";
+		break;
 
 		case 3: {
 			cout << "Введите название - ";
-			string n;
 			getline(cin, n);
 			searchTitle(songCata, size, n);
 		}
-			  break;
+		break;
 
 		case 4: {
 			cout << "Введите автора - ";
-			string n;
 			getline(cin, n);
 			searchAuthor(songCata, songFind, size, size2, n);
 			printCata(songFind, size2);
 		}
-			  break;
+		break;
+
 		case 5: {
-			cout << "Введите название - ";
-			string n;
+			cout << "Введите слово для поиска в тексте - ";
+			getline(cin, n);
+			searchText(songCata, size, n);			
+		}
+			  break;
+
+		case 6: {
+			cout << "Введите название песни для работы с текстом - ";
 			getline(cin, n);
 			int numb = searchTitle(songCata, size, n);
 			if (numb == -1) {
@@ -354,13 +465,26 @@ int main()
 			menuItem5(songCata[numb]);
 		}
 			  break;
-		case 6: {
 
+		case 7: {
+			cout << "Введите название - ";
+			getline(cin, n);
+			int numb = searchTitle(songCata, size, n);
+			if (numb == -1) {
+				break;
+			}
+			cout << "Удаление из каталога " << songCata[numb].title << endl;
+			if (confirm()) {
+				delSong(songCata, size, numb);
+				cout << "Удалено";
+			}
+			else cout << "Отмена\n";
 		}
-			  break;
+		break;
 		}
 	}
 	while (menu != 0);
+
 	saveSize(size);
 	saveCataInFile(songCata, size);
 	//printCata(songCata, size);
