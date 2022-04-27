@@ -1,8 +1,8 @@
-Forrest Gump
-Robert Zemeckis
-нет текста
+Бомж
+Сектор Газа
+Я копаюсь на помойке, как червяк.
 1940
- 
+source\Бомж.txt
 The Curious Case
 David Fincher
 нет текста
@@ -10,9 +10,9 @@ David Fincher
  
 Fight Club
 David Fincher
-нет текста
+Что такое осень? Это небо.
 5000
- 
+source\Fight Club.txt
 Tough nut
 John McTiernan
 нет текста

@@ -194,13 +194,6 @@ void saveTextFile(song a) {
 	}
 	save.close();
 }
-/*string SearchInLine(song a) {
-	cin.ignore();
-	string temp, end = "~";
-	getline(cin, temp);
-	int pos = temp.rfind(end); //проверка строки на наличие символа окончания ввода (~)
-	return temp;
-}*/
 
 void searchText(song* a, int size, string end) {
 	for (int i = 0; i < size; i++) {
