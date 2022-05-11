@@ -60,8 +60,8 @@ void initSize(int& size) {
 	inAll.close();
 }
 
-void printCataFromFile(song*& a, int size);
-void saveCataInFile(song* a, int size);
+void printCatalogFromFile(song*& a, int size);
+void saveCatalogInFile(song* a, int size);
 void printSong(song a);
 void initStructText(song& a);
 
@@ -399,7 +399,7 @@ int main()
 	song* songFind = new song[size2];
 	song* songCata = new song[size];
 	//fill(songCata);
-	printCataFromFile(songCata, size);
+	printCatalogFromFile(songCata, size);
 	string n;
 	int menu;
 	do {
@@ -479,7 +479,7 @@ int main()
 	while (menu != 0);
 
 	saveSize(size);
-	saveCataInFile(songCata, size);
+	saveCatalogInFile(songCata, size);
 	//printCata(songCata, size);
 	delete[]songCata;
 	delete[]songFind;
@@ -495,7 +495,7 @@ cout << "not finded" << endl;
 else
 cout << "finded in " << pos << " simvol position" << endl;*/
 
-void saveCataInFile(song* a, int size) {
+void saveCatalogInFile(song* a, int size) {
 	string path = "source\\catalog.txt";
 	ofstream all;
 	all.open(path, ofstream::out);
@@ -512,7 +512,7 @@ void saveCataInFile(song* a, int size) {
 	}
 	all.close();
 }
-void printCataFromFile(song *&a, int size) {
+void printCatalogFromFile(song *&a, int size) {
 	int i = 0;
 	string path, temp;
 	path = "source\\catalog.txt";
