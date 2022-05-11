@@ -61,9 +61,9 @@ void initSize(int& size) {
 }
 
 void printCatalogFromFile(song*& a, int size);
-void saveCatalogInFile(song* a, int size);
+void saveCatalogToFile(song* a, int size);
 void printSong(song a);
-void initStructText(song& a);
+void initializingAFileWithText(song& a);
 
 void addTextFromFile(song& a) {
 	string pathSourse, pathDest;
@@ -104,7 +104,7 @@ void addTextFromFile(song& a) {
 	destFile.close();
 }
 
-int searchTitle(song* a, int size, string n) {
+int findTitle(song* a, int size, string n) {
 
 	bool s = true;
 	//cout << "\nПоиск - " << n << endl;
@@ -148,7 +148,7 @@ void delText(song& a) {
 	getline(cin, temp);
 	a.text += "\n" + temp + "\n";
 }*/
-void screenText(song a) {
+void showTextOnScreen(song a) {
 	string path;
 	path = a.fileWithText;
 	ifstream File;
@@ -169,7 +169,7 @@ void screenText(song a) {
 	File.close();
 }
 
-void saveTextFile(song a) {
+void saveTextToFile(song a) {
 	string path = "source\\" + a.title + ".txt";
 	ofstream save;
 	a.fileWithText = path;
@@ -195,7 +195,7 @@ void saveTextFile(song a) {
 	save.close();
 }
 
-void searchText(song* a, int size, string end) {
+void findText(song* a, int size, string end) {
 	for (int i = 0; i < size; i++) {
 		ifstream File;
 		string path = a[i].fileWithText;
@@ -221,7 +221,7 @@ void searchText(song* a, int size, string end) {
 	}
 }
 
-void dialogAddText(song& a) {
+void showDialogToAddText(song& a) {
 	cout << "Текст \n";
 	cout << " 1 - Ввести с клавиатуры\n";
 	cout << " 2 - Считать из файла\n";
@@ -229,14 +229,14 @@ void dialogAddText(song& a) {
 	int f;
 	cin >> f;
 	if (f == 1) {
-		saveTextFile(a);
+		saveTextToFile(a);
 	}
 	else if (f == 2) {
 		addTextFromFile(a);
 	}
-	initStructText(a);
+	initializingAFileWithText(a);
 }
-void initStructText(song& a) {
+void initializingAFileWithText(song& a) {
 	if (a.fileWithText.length() == 0) {
 		a.text = "Нет текста";
 	}
@@ -252,7 +252,7 @@ void initStructText(song& a) {
 	}
 }
 
-song creatSong() {
+song createSong() {
 	song temp;
 	cout << "Название ";
 	//getchar();
@@ -261,12 +261,12 @@ song creatSong() {
 	getline(cin, temp.author);
 	cout << "Год создания ";
 	cin >> temp.year;
-	dialogAddText(temp);
-	initStructText(temp);
+	showDialogToAddText(temp);
+	initializingAFileWithText(temp);
 	return temp;
 }
 
-void menuItem5(song& a) {
+void theMenuForWorkingWithText(song& a) {
 	int menu5;
 	do
 	{
@@ -284,15 +284,15 @@ void menuItem5(song& a) {
 		switch (menu5)
 		{
 		case 1: {
-			dialogAddText(a);
+			showDialogToAddText(a);
 		}
 			  break;
 		case 2: {
-			screenText(a);
+			showTextOnScreen(a);
 		}
 			  break;
 		case 3: {
-			saveTextFile(a);
+			saveTextToFile(a);
 		}
 			  break;
 		
@@ -322,7 +322,7 @@ void addSong(song*& songCata, int& size) {
 	for (int i = 0; i < size; i++) {
 		temp[i] = songCata[i];
 	}
-	temp[size] = creatSong();
+	temp[size] = createSong();
 	delete[]songCata;
 	songCata = temp;
 	size++;
@@ -341,7 +341,7 @@ void delSong(song*& songCata, int& size, int numb) {
 	size--;
 }
 
-void printCata(song* a, int size) {
+void printCatalog(song* a, int size) {
 	for (int i = 0; i < size; i++) {
 		cout << "\n№" << i + 1 << " ";
 		printSong(a[i]);
@@ -349,7 +349,7 @@ void printCata(song* a, int size) {
 	cout << endl;
 }
 
-void searchAuthor(song* a, song*& f, int size, int& size2, string n) {
+void findAuthor(song* a, song*& f, int size, int& size2, string n) {
 	bool s = true;
 	int count = 0;
 	cout << "\nПесни автора -  " << n << endl;
@@ -397,9 +397,9 @@ int main()
 	int size, size2 = 0;
 	initSize(size);
 	song* songFind = new song[size2];
-	song* songCata = new song[size];
+	song* songCatalog = new song[size];
 	//fill(songCata);
-	printCatalogFromFile(songCata, size);
+	printCatalogFromFile(songCatalog, size);
 	string n;
 	int menu;
 	do {
@@ -418,57 +418,57 @@ int main()
 		cin.ignore();
 		switch (menu) {
 		case 1:
-			printCata(songCata, size);
+			printCatalog(songCatalog, size);
 		break;
 
 		case 2: 
-			addSong(songCata, size);
+			addSong(songCatalog, size);
 			cout << "Добавлено";
 		break;
 
 		case 3: {
 			cout << "Введите название - ";
 			getline(cin, n);
-			searchTitle(songCata, size, n);
+			findTitle(songCatalog, size, n);
 		}
 		break;
 
 		case 4: {
 			cout << "Введите автора - ";
 			getline(cin, n);
-			searchAuthor(songCata, songFind, size, size2, n);
-			printCata(songFind, size2);
+			findAuthor(songCatalog, songFind, size, size2, n);
+			printCatalog(songFind, size2);
 		}
 		break;
 
 		case 5: {
 			cout << "Введите слово для поиска в тексте - ";
 			getline(cin, n);
-			searchText(songCata, size, n);			
+			findText(songCatalog, size, n);			
 		}
 			  break;
 
 		case 6: {
 			cout << "Введите название песни для работы с текстом - ";
 			getline(cin, n);
-			int numb = searchTitle(songCata, size, n);
+			int numb = findTitle(songCatalog, size, n);
 			if (numb == -1) {
 				break;
 			}
-			menuItem5(songCata[numb]);
+			theMenuForWorkingWithText(songCatalog[numb]);
 		}
 			  break;
 
 		case 7: {
 			cout << "Введите название - ";
 			getline(cin, n);
-			int numb = searchTitle(songCata, size, n);
+			int numb = findTitle(songCatalog, size, n);
 			if (numb == -1) {
 				break;
 			}
-			cout << "Удаление из каталога " << songCata[numb].title << endl;
+			cout << "Удаление из каталога " << songCatalog[numb].title << endl;
 			if (confirm()) {
-				delSong(songCata, size, numb);
+				delSong(songCatalog, size, numb);
 				cout << "Удалено";
 			}
 			else cout << "Отмена\n";
@@ -479,9 +479,9 @@ int main()
 	while (menu != 0);
 
 	saveSize(size);
-	saveCatalogInFile(songCata, size);
+	saveCatalogToFile(songCatalog, size);
 	//printCata(songCata, size);
-	delete[]songCata;
+	delete[]songCatalog;
 	delete[]songFind;
 	return 0;
 }
@@ -495,7 +495,7 @@ cout << "not finded" << endl;
 else
 cout << "finded in " << pos << " simvol position" << endl;*/
 
-void saveCatalogInFile(song* a, int size) {
+void saveCatalogToFile(song* a, int size) {
 	string path = "source\\catalog.txt";
 	ofstream all;
 	all.open(path, ofstream::out);
